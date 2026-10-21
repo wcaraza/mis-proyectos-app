@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mis Proyectos</title>
+<meta name="theme-color" content="#23408e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Proyectos">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+/* Una columna tipo app; hojas inferiores para ficha, ajustes y chat. Sin fuentes externas: funciona sin conexión. */
+:root{
+  --bg:#f3f4f7; --panel:#ffffff; --ink:#151a2b; --muted:#646b80; --line:#e1e4ec; --soft:#eceef4;
+  --accent:#23408e; --accent-ink:#ffffff; --ok:#2e8b57; --warn:#b8690f; --bad:#c0392b;
+  --c-carrera:#2f6fd8; --c-software:#7a4fd1; --c-contenido:#d1495b; --c-ecommerce:#e08a1e; --c-personal:#2a9d8f; --c-otros:#5b6478;
+  --s-idea:#8a8fa0; --s-eval:#c58b00; --s-curso:#2f6fb3; --s-prod:#2e8b57; --s-pausa:#a05252; --s-done:#4b5163;
+  --f-display:ui-rounded,"SF Pro Rounded","Avenir Next",system-ui,sans-serif;
+  --f-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
+  --shadow:0 1px 2px rgba(20,26,43,.06),0 6px 18px rgba(20,26,43,.06);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root{
+  --bg:#0f1220; --panel:#181c2d; --ink:#e9ebf3; --muted:#9aa0b5; --line:#2a2f45; --soft:#21263a;
+  --accent:#8fa8ff; --accent-ink:#0f1220; --ok:#5cc28a; --warn:#e5a04b; --bad:#ef7a6c; --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark } }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--f-body);-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.wrap{max-width:1100px;margin:0 auto;padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:110px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);letter-spacing:-.01em;margin:0;text-wrap:balance}
+button{font:inherit;color:inherit;cursor:pointer;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 12px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+button:disabled{opacity:.5}
+.muted{color:var(--muted)}
+[hidden]{display:none!important}
+
+header.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+header.top h1{font-size:30px;font-weight:800}
+.sync{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-top:4px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}.dot.ok{background:var(--ok)}.dot.warn{background:var(--warn)}
+.hbtns{display:flex;gap:6px}
+.icon-btn{width:40px;height:40px;padding:0;display:grid;place-items:center;font-size:18px;border-radius:12px}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0 14px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-width:0}
+.stat b{display:block;font-family:var(--f-display);font-size:26px;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stat.warn b{color:var(--warn)}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cats{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;margin:0 0 14px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex:0 0 auto;min-width:150px;border:2px solid transparent;border-radius:14px;padding:12px 14px;color:#fff;background:var(--c);text-align:left}
+.cat.on{border-color:var(--ink)}
+.cat b{display:block;font-family:var(--f-display);font-size:16px}
+.cat small{opacity:.92;font-size:12px}
+.cat .mini{height:4px;background:rgba(255,255,255,.3);border-radius:4px;margin-top:8px;overflow:hidden}
+.cat .mini i{display:block;height:100%;background:#fff}
+.next{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.next h2{font:700 12.5px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.next ol{margin:0;padding-left:20px;display:grid;gap:6px}.next li small{color:var(--muted)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.chip{border-radius:999px;padding:5px 12px;font-size:13px}.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.group{margin-top:20px}
+.ghead{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:color-mix(in srgb,var(--c) 14%,var(--panel));border-left:6px solid var(--c);margin-bottom:10px}
+.ghead h3{flex:1;font-size:18px}.ghead span{font-size:13px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:9px;text-align:left;min-width:0;box-shadow:var(--shadow);width:100%}
+.card .row1{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.card h4{margin:0;font-family:var(--f-display);font-size:17px;font-weight:700;line-height:1.25}
+.badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.bar{height:6px;background:var(--soft);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--c,var(--accent));border-radius:6px}
+.meta{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.resumen{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.step{font-size:13px;background:var(--soft);border-radius:9px;padding:8px 10px}
+.step b{display:block;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.stale{color:var(--warn);font-weight:700}
+.p-Alta{color:var(--bad)}.p-Media{color:var(--warn)}.p-Baja{color:var(--muted)}
+.empty{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:28px 20px;text-align:center;color:var(--muted)}
+.banner{background:color-mix(in srgb,var(--warn) 14%,var(--panel));border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line));border-radius:12px;padding:10px 14px;margin-top:12px;font-size:14px}
+
+.scrim{position:fixed;inset:0;background:rgba(10,12,22,.45);z-index:20}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--panel);border-radius:20px 20px 0 0;max-height:90vh;overflow:auto;-webkit-overflow-scrolling:touch;
+  padding-top:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+@media (min-width:760px){.sheet{left:auto;top:0;width:520px;max-height:none;border-radius:0;border-left:1px solid var(--line);padding-top:calc(18px + env(safe-area-inset-top,0px))}.grab{display:none}}
+.grab{width:40px;height:4px;border-radius:4px;background:var(--line);margin:-6px auto 12px}
+.sheet h2{font-size:22px;margin-bottom:4px}
+.sheet label{display:block;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 5px}
+.sheet input,.sheet select,.sheet textarea{width:100%;font:inherit;font-size:16px;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+.sheet textarea{min-height:70px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tasks{list-style:none;margin:0;padding:0}
+.tasks li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+.tasks input[type=checkbox]{width:22px;height:22px;flex:0 0 auto;margin:0;accent-color:var(--accent)}
+.tasks li.done .tt{color:var(--muted);text-decoration:line-through}
+.tasks .tt{flex:1;min-width:0}
+.tasks li button{border:none;background:none;color:var(--muted);padding:0 4px}
+.addrow{display:flex;gap:8px;margin-top:8px}
+.actions{display:flex;justify-content:space-between;gap:8px;margin-top:18px;flex-wrap:wrap}
+.help{font-size:13px;color:var(--muted);margin:6px 0 0}
+.help a{color:var(--accent)}
+.fab{position:fixed;z-index:15;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--accent);color:var(--accent-ink);border:none;border-radius:999px;padding:13px 18px;font-weight:700;box-shadow:0 8px 24px rgba(20,26,43,.25)}
+.chatlog{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.msg{padding:10px 12px;border-radius:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.u{align-self:flex-end;background:var(--accent);color:var(--accent-ink);max-width:85%}
+.msg.a{align-self:flex-start;background:var(--soft);max-width:95%}
+.msg.note{align-self:center;font-size:12px;color:var(--muted);background:none}
+.sugs{display:flex;gap:6px;flex-wrap:wrap}.sugs button{font-size:13px;border-radius:999px;padding:6px 11px}
+.composer{display:flex;gap:8px;position:sticky;bottom:0;background:var(--panel);padding-top:8px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:13px;max-width:90vw;text-align:center}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(20px);opacity:.6}}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Mis Proyectos</h1>
+      <div class="sync"><span class="dot" id="dot"></span><span id="syncTxt">Cargando…</span></div>
+    </div>
+    <div class="hbtns">
+      <button class="icon-btn" id="btnNuevo" aria-label="Nuevo proyecto" title="Nuevo proyecto">＋</button>
+      <button class="icon-btn" id="btnRefrescar" aria-label="Actualizar" title="Actualizar">⟳</button>
+      <button class="icon-btn" id="btnAjustes" aria-label="Ajustes" title="Ajustes">⚙︎</button>
+    </div>
+  </header>
+  <div class="banner" id="banner" hidden></div>
+  <section class="stats" id="stats" aria-label="Resumen"></section>
+  <nav class="cats" id="cats" aria-label="Categorías"></nav>
+  <section class="next" id="next"></section>
+  <div class="filters" id="filters"></div>
+  <main id="list"></main>
+</div>
+<button class="fab" id="fab" hidden>✦ Preguntar a Claude</button>
+<div id="layer"></div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="estado.js"></script>
+<script src="gitstore.js"></script>
+<script>
+const {ESTADOS, PRIOS} = Estado;
+const DIR = "estados";
+const SCOL={"Idea":"var(--s-idea)","Evaluando":"var(--s-eval)","En curso":"var(--s-curso)","En producción":"var(--s-prod)","Pausado":"var(--s-pausa)","Completado":"var(--s-done)"};
+const CATS={"Carrera":["var(--c-carrera)","🎓"],"Software":["var(--c-software)","💻"],"Contenido":["var(--c-contenido)","🎬"],"E-commerce":["var(--c-ecommerce)","🛒"],"Personal":["var(--c-personal)","🌱"]};
+const catOf=c=>CATS[c]||["var(--c-otros)","📁"];
+const DIAS=14;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const hoy=()=>new Date().toISOString().slice(0,10);
+const dias=d=>d?Math.floor((Date.now()-new Date(String(d).slice(0,10)+"T00:00:00"))/864e5):999;
+const hace=d=>d===0?"hoy":d===1?"ayer":d>900?"—":`hace ${d} días`;
+const activo=p=>!["Pausado","Completado"].includes(p.estado);
+const prog=p=>p.tareas?.length?Math.round(100*p.tareas.filter(t=>t.hecho).length/p.tareas.length):(p.estado==="Completado"?100:0);
+const ultimo=p=>[p.actualizado,p.actividad].filter(Boolean).sort().pop();
+const parado=p=>activo(p)&&dias(ultimo(p))>DIAS;
+const slug=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,50)||"proyecto";
+const LS={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+
+let cfg=LS.get("mp:cfg",null), store=null, proyectos=[], meta={}, filtro="Activos", fCat=null, cargado=false, cargando=false;
+function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2200)}
+function banner(m){const b=$("#banner");b.hidden=!m;b.innerHTML=m||""}
+
+/* ---------- datos ---------- */
+function crearStore(){ store = cfg?.token ? new GitStore({owner:cfg.owner, repo:cfg.repo, token:cfg.token, branch:cfg.branch||"main"}) : null; }
+async function cargar(){
+  if(!store){ cargado=true; render(); return; }
+  if(cargando) return; cargando=true; $("#syncTxt").textContent="Actualizando…";
+  try{
+    if(store.pendingCount) { const n=await store.flush(op=>txt=>Estado.apply(op,txt,hoy())); if(n) toast(`${n} cambio(s) pendientes enviados`); }
+    const {items, offline} = await store.list(DIR);
+    const md = items.filter(f=>f.name.endsWith(".md"));
+    const docs = await Promise.all(md.map(f=>store.read(f.path, f.sha).catch(()=>null)));
+    const m = await store.read("meta.json").catch(()=>null);
+    meta = m ? (()=>{try{return JSON.parse(m.text)}catch{return {}}})() : {};
+    proyectos = md.map((f,i)=>docs[i]&&({id:f.name.replace(/\.md$/,""), path:f.path, ...Estado.parse(docs[i].text), actividad:meta.actividad?.[f.name.replace(/\.md$/,"")]||""})).filter(Boolean);
+    cargado=true; banner(""); estadoSync(offline);
+  }catch(e){
+    cargado=true;
+    if(e.status===401||e.status===403||e.status===404) banner(`${esc(e.message)}. <button id="bFix">Revisar ajustes</button>`), $("#bFix")&&($("#bFix").onclick=ajustes);
+    else banner(esc(e.message||"No se pudo cargar"));
+    estadoSync(true);
+  }finally{ cargando=false; render(); }
+}
+function estadoSync(offline){
+  const pend=store?.pendingCount||0, d=meta.sync?dias(meta.sync):999;
+  $("#dot").className="dot "+(offline||pend?"warn":"ok");
+  const mac=meta.sync?`Mac sincronizado ${hace(d)}`:"Mac aún sin sincronizar";
+  $("#syncTxt").textContent=(offline?"Sin conexión · datos guardados · ":"")+(pend?`${pend} cambio(s) por enviar · `:"")+mac;
+}
+async function guardar(antes, despues, msg){
+  const op=Estado.diff(antes, despues);
+  if(!Object.keys(op.set).length&&!Object.keys(op.toggle).length&&!op.add.length&&!op.remove.length) return true;
+  try{
+    const r=await store.update(antes.path, txt=>Estado.apply(op, txt, hoy()), msg||`Móvil: ${despues.nombre}`, op);
+    toast(r.queued?"Sin conexión: se enviará al recuperar la red":"Guardado");
+    const i=proyectos.findIndex(p=>p.id===antes.id); if(i>=0) proyectos[i]={...despues, actualizado:hoy()};
+    render(); estadoSync(false); if(!r.queued) setTimeout(cargar,400);
+    return true;
+  }catch(e){ toast(e.message||"No se pudo guardar"); return false; }
+}
+
+/* ---------- vista ---------- */
+function render(){
+  const P=proyectos, A=P.filter(activo);
+  const media=A.length?Math.round(A.reduce((s,p)=>s+prog(p),0)/A.length):0;
+  $("#stats").innerHTML=[[A.length,"Activos",""],[P.filter(p=>p.estado==="En curso").length,"En curso",""],[media+"%","Avance medio",""],[P.filter(parado).length,`Parados +${DIAS} días`,P.some(parado)?"warn":""]]
+    .map(([n,l,c])=>`<div class="stat ${c}"><b>${cargado&&store?n:"—"}</b><span>${l}</span></div>`).join("");
+  const cats=[...new Set([...Object.keys(CATS),...P.map(p=>p.categoria||"Otros")])].filter(c=>P.some(p=>(p.categoria||"Otros")===c));
+  $("#cats").innerHTML=cats.map(c=>{const l=P.filter(p=>(p.categoria||"Otros")===c),la=l.filter(activo),[col,ic]=catOf(c);
+    const av=la.length?Math.round(la.reduce((s,p)=>s+prog(p),0)/la.length):0;
+    return `<button class="cat ${fCat===c?"on":""}" style="--c:${col}" data-c="${esc(c)}"><span aria-hidden="true">${ic}</span><b>${esc(c)}</b><small>${la.length} activos · ${av}%</small><div class="mini"><i style="width:${av}%"></i></div></button>`}).join("");
+  $("#cats").querySelectorAll(".cat").forEach(b=>b.onclick=()=>{fCat=fCat===b.dataset.c?null:b.dataset.c;render()});
+  const cola=A.filter(p=>p.proximo_paso).sort((a,b)=>PRIOS.indexOf(a.prioridad)-PRIOS.indexOf(b.prioridad)||dias(ultimo(b))-dias(ultimo(a))).slice(0,3);
+  $("#next").hidden=!store;
+  $("#next").innerHTML=`<h2>Siguiente en la cola</h2>${cola.length?`<ol>${cola.map(p=>`<li>${esc(p.proximo_paso)} <small>· ${esc(p.nombre)}</small></li>`).join("")}</ol>`:`<p class="muted" style="margin:0">${cargado?"Nada pendiente.":"Cargando…"}</p>`}`;
+  $("#filters").innerHTML=["Activos","Todos",...ESTADOS].map(f=>`<button class="chip ${f===filtro?"on":""}" data-f="${f}">${f}</button>`).join("");
+  $("#filters").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{filtro=b.dataset.f;render()});
+  $("#fab").hidden=!(store&&cfg?.apiKey);
+  if(!store){ $("#list").innerHTML=`<div class="empty"><b>Conecta tu repositorio de datos</b><br>Pulsa ⚙︎ y pega tu token de GitHub para ver tus proyectos.<br><br><button class="primary" id="bCfg">Configurar</button></div>`; $("#bCfg").onclick=ajustes; return; }
+  if(!cargado){ $("#list").innerHTML=`<div class="empty">Cargando tus proyectos…</div>`; return; }
+  let vis=P.filter(p=>filtro==="Todos"||(filtro==="Activos"?activo(p):p.estado===filtro));
+  if(fCat) vis=vis.filter(p=>(p.categoria||"Otros")===fCat);
+  if(!P.length){ $("#list").innerHTML=`<div class="empty"><b>No hay proyectos todavía.</b><br>Aparecen cuando tu Mac sincroniza, o crea uno con ＋.</div>`; return; }
+  $("#list").innerHTML=cats.map(c=>{const l=vis.filter(p=>(p.categoria||"Otros")===c).sort((a,b)=>PRIOS.indexOf(a.prioridad)-PRIOS.indexOf(b.prioridad));if(!l.length)return"";
+    const[col,ic]=catOf(c);
+    return `<section class="group"><div class="ghead" style="--c:${col}"><span aria-hidden="true">${ic}</span><h3>${esc(c)}</h3><span>${l.length}</span></div><div class="grid">${l.map(card).join("")}</div></section>`}).join("")||`<div class="empty">No hay proyectos con este filtro.</div>`;
+  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>abrir(c.dataset.id));
+}
+function card(p){
+  const pr=prog(p),h=p.tareas?.filter(t=>t.hecho).length||0,t=p.tareas?.length||0,[col]=catOf(p.categoria),d=dias(ultimo(p));
+  return `<button class="card" data-id="${esc(p.id)}" style="--c:${col}">
+    <div class="row1"><h4>${esc(p.nombre)}</h4><span class="badge" style="background:${SCOL[p.estado]||"var(--s-idea)"}">${esc(p.estado||"Idea")}</span></div>
+    <div class="bar"><i style="width:${pr}%"></i></div>
+    <div class="meta"><span>${pr}% · ${h}/${t} tareas</span><span class="p-${esc(p.prioridad)}">● ${esc(p.prioridad||"")}</span></div>
+    ${p.resumen?`<div class="resumen">${esc(p.resumen)}</div>`:""}
+    ${p.proximo_paso?`<div class="step"><b>Próximo paso</b>${esc(p.proximo_paso)}</div>`:""}
+    <div class="meta"><span class="${parado(p)?"stale":""}">Movido ${hace(d)}${parado(p)?" · parado":""}</span></div>
+  </button>`;
+}
+
+/* ---------- ficha de proyecto ---------- */
+function cerrar(){$("#layer").innerHTML=""}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")cerrar()});
+const opt=(a,v)=>a.map(x=>`<option ${x===v?"selected":""}>${esc(x)}</option>`).join("");
+function abrir(id){
+  const orig=proyectos.find(x=>x.id===id); if(!orig) return;
+  const p=structuredClone(orig); p.tareas=p.tareas||[];
+  $("#layer").innerHTML=`<div class="scrim" id="scrim"></div><aside class="sheet" role="dialog" aria-modal="true" aria-label="${esc(p.nombre)}">
+    <div class="grab"></div><h2>${esc(p.nombre)}</h2>
+    <div class="muted" style="font-size:13px">${esc(p.categoria||"")} · ${prog(p)}% · actualizado ${esc(p.actualizado||"—")}</div>
+    ${p.resumen?`<p style="margin:12px 0 0">${esc(p.resumen)}</p>`:""}
+    <div class="two"><div><label for="e-estado">Estado</label><select id="e-estado">${opt(ESTADOS,p.estado)}</select></div>
+      <div><label for="e-prio">Prioridad</label><select id="e-prio">${opt(PRIOS,p.prioridad)}</select></div></div>
+    <label for="e-next">Próximo paso</label><input id="e-next" value="${esc(p.proximo_paso)}">
+    <label>Tareas</label><ul class="tasks" id="e-tareas"></ul>
+    <div class="addrow"><input id="e-new" placeholder="Nueva tarea" aria-label="Nueva tarea"><button id="e-add">Añadir</button></div>
+    <label for="e-notas">Notas</label><textarea id="e-notas">${esc(p.notas)}</textarea>
+    ${p.enlace?`<p style="margin:12px 0 0"><a href="${esc(p.enlace)}" target="_blank" rel="noopener">Abrir enlace del proyecto ↗</a></p>`:""}
+    <div class="actions"><button id="e-ask" ${cfg?.apiKey?"":"hidden"}>✦ Preguntar sobre este</button><span></span><div style="display:flex;gap:8px"><button id="e-x">Cerrar</button><button class="primary" id="e-save">Guardar</button></div></div>
+  </aside>`;
+  const pintar=()=>{ $("#e-tareas").innerHTML=p.tareas.map((t,i)=>`<li class="${t.hecho?"done":""}"><input type="checkbox" id="t${i}" data-i="${i}" ${t.hecho?"checked":""}><label class="tt" for="t${i}">${esc(t.texto)}</label><button data-d="${i}" aria-label="Quitar tarea">✕</button></li>`).join("");
+    $("#e-tareas").querySelectorAll("input").forEach(c=>c.onchange=()=>{p.tareas[c.dataset.i].hecho=c.checked;pintar()});
+    $("#e-tareas").querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{p.tareas.splice(+b.dataset.d,1);pintar()}); };
+  pintar();
+  const add=()=>{const v=$("#e-new").value.trim();if(v&&!p.tareas.some(t=>t.texto===v)){p.tareas.push({texto:v,hecho:false});$("#e-new").value="";pintar()}};
+  $("#e-add").onclick=add; $("#e-new").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();add()}};
+  $("#scrim").onclick=cerrar; $("#e-x").onclick=cerrar; $("#e-ask").onclick=()=>abrirChat(p.id);
+  $("#e-save").onclick=async()=>{ p.estado=$("#e-estado").value; p.prioridad=$("#e-prio").value; p.proximo_paso=$("#e-next").value.trim(); p.notas=$("#e-notas").value;
+    $("#e-save").disabled=true; if(await guardar(orig,p)) cerrar(); else $("#e-save").disabled=false; };
+}
+function nuevo(){
+  if(!store) return ajustes();
+  const cats=[...new Set([...Object.keys(CATS),...proyectos.map(p=>p.categoria).filter(Boolean)])];
+  $("#layer").innerHTML=`<div class="scrim" id="scrim"></div><aside class="sheet" role="dialog" aria-modal="true" aria-label="Nuevo proyecto"><div class="grab"></div>
+    <h2>Nuevo proyecto</h2>
+    <label for="n-nombre">Nombre</label><input id="n-nombre" placeholder="Ej.: App de gastos">
+    <div class="two"><div><label for="n-cat">Categoría</label><select id="n-cat">${opt(cats,"Software")}</select></div><div><label for="n-prio">Prioridad</label><select id="n-prio">${opt(PRIOS,"Media")}</select></div></div>
+    <label for="n-next">Próximo paso</label><input id="n-next">
+    <p class="help">Tu Mac creará su carpeta en Documents/Claude en la próxima sincronización.</p>
+    <div class="actions"><span></span><div style="display:flex;gap:8px"><button id="n-x">Cancelar</button><button class="primary" id="n-ok">Crear</button></div></div></aside>`;
+  $("#scrim").onclick=cerrar; $("#n-x").onclick=cerrar;
+  $("#n-ok").onclick=async()=>{
+    const nombre=$("#n-nombre").value.trim(); if(!nombre) return toast("Ponle un nombre");
+    let id=slug(nombre); if(proyectos.some(p=>p.id===id)) id+="-"+Date.now().toString(36).slice(-4);
+    const txt=Estado.render({nombre,categoria:$("#n-cat").value,estado:"Idea",prioridad:$("#n-prio").value,proximo_paso:$("#n-next").value.trim(),actualizado:hoy(),tareas:[]});
+    $("#n-ok").disabled=true;
+    try{ await store.write(`${DIR}/${id}.md`, txt, null, `Móvil: nuevo proyecto ${nombre}`); toast("Proyecto creado"); cerrar(); cargar(); }
+    catch(e){ toast(e.message); $("#n-ok").disabled=false; }
+  };
+}
+
+/* ---------- ajustes ---------- */
+function ajustes(){
+  const owner=cfg?.owner || (location.hostname.endsWith(".github.io")?location.hostname.split(".")[0]:"");
+  $("#layer").innerHTML=`<div class="scrim" id="scrim"></div><aside class="sheet" role="dialog" aria-modal="true" aria-label="Ajustes"><div class="grab"></div>
+    <h2>Ajustes</h2>
+    <p class="help">Todo se guarda solo en este dispositivo.</p>
+    <div class="two"><div><label for="s-owner">Usuario de GitHub</label><input id="s-owner" autocapitalize="off" autocorrect="off" value="${esc(owner)}"></div>
+      <div><label for="s-repo">Repositorio de datos</label><input id="s-repo" autocapitalize="off" autocorrect="off" value="${esc(cfg?.repo||"mis-proyectos-datos")}"></div></div>
+    <label for="s-token">Token de GitHub</label><input id="s-token" type="password" autocomplete="off" placeholder="github_pat_…" value="${esc(cfg?.token||"")}">
+    <p class="help">Créalo en <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained token</a>: solo el repositorio de datos, permiso <b>Contents: Read and write</b>.</p>
+    <label for="s-key">Clave de la API de Anthropic (opcional)</label><input id="s-key" type="password" autocomplete="off" placeholder="sk-ant-…" value="${esc(cfg?.apiKey||"")}">
+    <p class="help">Activa "Preguntar a Claude". Se paga por uso en <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>; no necesita suscripción.</p>
+    <label for="s-model">Modelo</label><input id="s-model" autocapitalize="off" value="${esc(cfg?.model||"claude-sonnet-5-5")}">
+    <div class="actions"><button id="s-del" class="muted">Borrar datos de este dispositivo</button><div style="display:flex;gap:8px"><button id="s-x">Cerrar</button><button class="primary" id="s-ok">Guardar y probar</button></div></div>
+    <p class="help" id="s-res"></p></aside>`;
+  $("#scrim").onclick=cerrar; $("#s-x").onclick=cerrar;
+  $("#s-del").onclick=()=>{ if($("#s-del").dataset.c){ try{localStorage.clear()}catch{} cfg=null; store=null; proyectos=[]; cerrar(); render(); toast("Datos borrados de este dispositivo"); } else { $("#s-del").dataset.c=1; $("#s-del").textContent="Pulsa otra vez para confirmar"; } };
+  $("#s-ok").onclick=async()=>{
+    const n={owner:$("#s-owner").value.trim(),repo:$("#s-repo").value.trim(),token:$("#s-token").value.trim(),apiKey:$("#s-key").value.trim(),model:$("#s-model").value.trim()||"claude-sonnet-5-5"};
+    if(!n.owner||!n.repo||!n.token){ $("#s-res").textContent="Faltan usuario, repositorio o token."; return; }
+    $("#s-res").textContent="Probando…";
+    try{
+      const info=await new GitStore(n).check(); n.branch=info.branch||"main";
+      if(!info.private){ $("#s-res").innerHTML="⚠︎ Ese repositorio es <b>público</b>: cualquiera podría leer tus proyectos. Hazlo privado en GitHub y vuelve a probar."; return; }
+      cfg=n; LS.set("mp:cfg",cfg); crearStore(); cerrar(); toast("Conectado a "+info.full_name); cargar();
+    }catch(e){ $("#s-res").textContent="No funcionó: "+e.message; }
+  };
+}
+
+/* ---------- Preguntar a Claude (opcional, API de Anthropic) ---------- */
+let turnos=[], ctl=null, foco=null;
+function reglas(){
+  const ctx=proyectos.map(p=>({id:p.id,nombre:p.nombre,categoria:p.categoria,estado:p.estado,prioridad:p.prioridad,avance:prog(p)+"%",proximo_paso:p.proximo_paso,resumen:p.resumen,movido:ultimo(p),tareas:(p.tareas||[]).map(t=>(t.hecho?"[x] ":"[ ] ")+t.texto)}));
+  return `Eres el asistente del panel personal "Mis Proyectos" de Walter. Hoy es ${hoy()}. Responde en español, breve y concreto.${foco?` La pregunta es sobre el proyecto "${foco}".`:""} No inventes avances. Proyectos (JSON):\n${JSON.stringify(ctx)}`;
+}
+function abrirChat(id){
+  foco=id||null; if(id) turnos=[];
+  const p=id&&proyectos.find(x=>x.id===id);
+  const sugs=p?["¿Qué me falta para terminarlo?","¿Cuál es el siguiente paso más rápido?"]:["¿En qué me enfoco esta semana?","¿Qué proyectos están parados?","Resume cómo voy"];
+  $("#layer").innerHTML=`<div class="scrim" id="scrim"></div><aside class="sheet" role="dialog" aria-modal="true" aria-label="Preguntar a Claude"><div class="grab"></div>
+    <h2>Preguntar a Claude</h2><div class="muted" style="font-size:13px">${p?esc(p.nombre):"Sobre todos tus proyectos"} · se cobra por uso en tu cuenta de la API</div>
+    <div class="chatlog" id="log"></div><div class="sugs" id="sugs">${sugs.map(s=>`<button>${esc(s)}</button>`).join("")}</div>
+    <div class="composer"><textarea id="q" placeholder="Escribe tu pregunta…" aria-label="Pregunta"></textarea><button class="primary" id="send">Enviar</button></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:8px"><button id="cx">Cerrar</button></div></aside>`;
+  const close=()=>{ctl?.abort();cerrar()}; $("#scrim").onclick=close; $("#cx").onclick=close;
+  pintarLog(); $("#sugs").querySelectorAll("button").forEach(b=>b.onclick=()=>enviar(b.textContent));
+  $("#send").onclick=()=>{ if(ctl){ctl.abort();return} enviar($("#q").value) };
+  $("#q").onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#send").click()}};
+}
+function pintarLog(extra){ const l=$("#log"); if(!l) return; l.innerHTML=turnos.map(t=>`<div class="msg ${t.role==="user"?"u":"a"}">${esc(t.content)}</div>`).join("")+(extra||""); l.lastElementChild?.scrollIntoView({block:"nearest"}); }
+async function enviar(txt){
+  txt=(txt||"").trim(); if(!txt) return; $("#q").value=""; $("#sugs")?.remove();
+  turnos.push({role:"user",content:txt}); pintarLog(`<div class="msg a">Pensando…</div>`);
+  ctl=new AbortController(); $("#send").textContent="Parar";
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",signal:ctl.signal,headers:{"content-type":"application/json","x-api-key":cfg.apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:cfg.model||"claude-sonnet-5-5",max_tokens:1200,system:reglas(),messages:turnos.slice(-10)})});
+    const j=await r.json();
+    if(!r.ok) throw new Error(j.error?.message||`Error ${r.status}`);
+    turnos.push({role:"assistant",content:(j.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("\n")||"(sin respuesta)"}); pintarLog();
+  }catch(e){
+    turnos.pop();
+    pintarLog(e.name==="AbortError"?"":`<div class="msg note">${esc(navigator.onLine?("No se pudo obtener respuesta: "+e.message):"Sin conexión.")}</div>`);
+  }finally{ ctl=null; const s=$("#send"); if(s) s.textContent="Enviar"; }
+}
+
+/* ---------- arranque ---------- */
+$("#btnAjustes").onclick=ajustes; $("#btnNuevo").onclick=nuevo; $("#btnRefrescar").onclick=()=>cargar(); $("#fab").onclick=()=>abrirChat(null);
+window.addEventListener("online",()=>cargar());
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") cargar(); });
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
+crearStore();
+if(store){ // pinta primero lo que haya en caché, luego actualiza
+  const c=store.cache, md=(c.lists[DIR]||[]).filter(f=>f.name.endsWith(".md"));
+  try{ meta=JSON.parse(c.files["meta.json"]?.text||"{}") }catch{}
+  proyectos=md.map(f=>c.files[f.path]&&({id:f.name.replace(/\.md$/,""),path:f.path,...Estado.parse(c.files[f.path].text),actividad:meta.actividad?.[f.name.replace(/\.md$/,"")]||""})).filter(Boolean);
+  if(proyectos.length) cargado=true;
+}
+render(); cargar();
+</script>
+</body>
+</html>
