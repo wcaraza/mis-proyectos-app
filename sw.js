@@ -1,6 +1,6 @@
 // Service worker: guarda la app para abrirla sin conexión.
 // Los datos (api.github.com) NO pasan por aquí: los cachea gitstore.js.
-const VERSION = "mp-20261021122923";
+const VERSION = "mp-20261022123013";
 const SHELL = ["./", "index.html", "estado.js", "gitstore.js", "manifest.webmanifest",
   "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 

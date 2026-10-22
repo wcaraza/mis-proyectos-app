@@ -17,7 +17,7 @@
 :root{
   --bg:#f3f4f7; --panel:#ffffff; --ink:#151a2b; --muted:#646b80; --line:#e1e4ec; --soft:#eceef4;
   --accent:#23408e; --accent-ink:#ffffff; --ok:#2e8b57; --warn:#b8690f; --bad:#c0392b;
-  --c-carrera:#2f6fd8; --c-software:#7a4fd1; --c-contenido:#d1495b; --c-ecommerce:#e08a1e; --c-personal:#2a9d8f; --c-otros:#5b6478;
+  --c-carrera:#2f6fd8; --c-software:#7a4fd1; --c-contenido:#d1495b; --c-ecommerce:#e08a1e; --c-personal:#2a9d8f; --c-apps:#0f8b8d; --c-otros:#5b6478;
   --s-idea:#8a8fa0; --s-eval:#c58b00; --s-curso:#2f6fb3; --s-prod:#2e8b57; --s-pausa:#a05252; --s-done:#4b5163;
   --f-display:ui-rounded,"SF Pro Rounded","Avenir Next",system-ui,sans-serif;
   --f-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
@@ -146,7 +146,7 @@ header.top h1{font-size:30px;font-weight:800}
 const {ESTADOS, PRIOS} = Estado;
 const DIR = "estados";
 const SCOL={"Idea":"var(--s-idea)","Evaluando":"var(--s-eval)","En curso":"var(--s-curso)","En producción":"var(--s-prod)","Pausado":"var(--s-pausa)","Completado":"var(--s-done)"};
-const CATS={"Carrera":["var(--c-carrera)","🎓"],"Software":["var(--c-software)","💻"],"Contenido":["var(--c-contenido)","🎬"],"E-commerce":["var(--c-ecommerce)","🛒"],"Personal":["var(--c-personal)","🌱"]};
+const CATS={"Carrera":["var(--c-carrera)","🎓"],"Software":["var(--c-software)","💻"],"Contenido":["var(--c-contenido)","🎬"],"E-commerce":["var(--c-ecommerce)","🛒"],"Aplicaciones":["var(--c-apps)","📱"],"Personal":["var(--c-personal)","🌱"]};
 const catOf=c=>CATS[c]||["var(--c-otros)","📁"];
 const DIAS=14;
 const $=s=>document.querySelector(s);
